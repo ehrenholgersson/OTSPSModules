@@ -21,11 +21,11 @@ function Run-OfficeUpdateOrFix
         if (!($targetBuild -eq $currentVersion)){
         $actionString = "Update"
         Write-Output "Starting Update..."
-        Start-Process -FilePath "cmd.exe" -ArgumentList "'$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\ClickToRunofficec2rclient.exe' /update user updatetoversion=$($targetBuild)"
+        #Start-Process -FilePath "cmd.exe" -ArgumentList "'$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\ClickToRunofficec2rclient.exe' /update user updatetoversion=$($targetBuild)"
         }
         else {
             Write-Output "Starting Repair..."
-            Start-Process -FilePath "cmd.exe" -ArgumentList "'$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\ClickToRunofficec2rclient.exe' /update user updatetoversion=$($targetBuild)"
+            #Start-Process -FilePath "cmd.exe" -ArgumentList "'$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\ClickToRunofficec2rclient.exe' /update user updatetoversion=$($targetBuild)"
         }
     }
     catch {
