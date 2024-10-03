@@ -40,7 +40,17 @@ function Run-OfficeUpdateOrFix{
             Start-Process -FilePath $c2rPath -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
         }
         $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable err
-        if ($err -ne $null) {throw "Office Click-to-Run process didn't seem to run."}
+        if ($err -ne $null) {
+            [double]$timer = 0
+            while ($err -ne $null){
+                $err = $null
+                start-sleep -Seconds 0.2
+                $timer += 0.2
+                $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable err
+                if ($timer -gt 3) {throw "Office Click-to-Run process didn't seem to run."}
+            }
+        }
+
         Wait-Process -Id $process.Id
      }
     catch {
