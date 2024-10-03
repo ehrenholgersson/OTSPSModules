@@ -13,7 +13,12 @@ function OTS-OfficeRepair{
         Get-CimInstance -ClassName Win32_Product | ? { !($_.Name -eq $null) -and $_.Name.Contains("Office")} | ForEach-Object -Process {$currentVersion = $_.Version}
         
         Write-Output "Get latest version..."
-        $targetBuild = Get-LatestOfficeVersion -channel "Current"
+        try{
+            $targetBuild = Get-LatestOfficeVersion -channel "Current"
+        }
+        catch {
+            throw "Error getting latest version: $_"
+        }
 
         Write-Output "Compare Versions..."
         if ([long]($targetBuild | Remove-FromString -toRemove '.') -gt [long]($currentVersion | Remove-FromString -toRemove '.')){
