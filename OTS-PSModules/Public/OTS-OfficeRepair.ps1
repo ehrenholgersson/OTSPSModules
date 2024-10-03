@@ -1,24 +1,28 @@
 function OTS-OfficeRepair{
     $wshell = New-Object -ComObject Wscript.Shell
     $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click the button. ",0,"Office Repair",0x1)
-	$actionString = @("Nonthing","Ignored") # Shouldn't see this
+	$actionString = @("<Should not see this>","Ignored")
 	if (!($response -eq 1))
 	{
 		return
 	}
     try {
+        Write-Output "Get current Office version..."
         $c2rPath = "$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\officec2rclient.exe"
         $currentVersion = $null
         Get-CimInstance -ClassName Win32_Product | ? { !($_.Name -eq $null) -and $_.Name.Contains("Office")} | ForEach-Object -Process {$currentVersion = $_.Version}
-
+        
+        Write-Output "Get latest version..."
         $targetBuild = Get-LatestOfficeVersion -channel "Current"
 
+        Write-Output "Compare Versions..."
         if ([long]($targetBuild | Remove-FromString -toRemove '.') -gt [long]($currentVersion | Remove-FromString -toRemove '.')){
             $actionString = @("update","updated")
-        Write-Output "Starting Update to $targetBuild..."
-        Start-Process -FilePath $c2rPath -ArgumentList "/update user updatetoversion=$($targetBuild)"
+            Write-Output "Starting Update to $targetBuild..."
+            Start-Process -FilePath $c2rPath -ArgumentList "/update user updatetoversion=$($targetBuild)"
         }
         else {
+            $actionString = @("repair","repaired")
             Write-Output "Starting Repair..."
             Start-Process -FilePath $c2rPath -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
         }
