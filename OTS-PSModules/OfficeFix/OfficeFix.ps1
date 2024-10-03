@@ -15,8 +15,7 @@ function Remove-FromString{
     }
     return $result
 }
-function Run-OfficeUpdateOrFix
-{
+function Run-OfficeUpdateOrFix{
     $wshell = New-Object -ComObject Wscript.Shell
     $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click OK. ",0,"Office Repair",0x1)
 	
@@ -69,7 +68,11 @@ function Get-LatestOfficeVersion {
 
     Invoke-WebRequest $catalogUrl -OutFile "$($catDir)releasehistory.cab"
 
-    Start-Process -FilePath "cmd.exe" -ArgumentList "/c extrac32.exe /Y /E /L $($catDir) releasehistory.cab" | Out-Null
+    Start-Process -FilePath "cmd.exe" -ArgumentList "/c extrac32.exe /Y /E /L $($catDir) $($catDir)releasehistory.cab" | Out-Null
+
+    $process = Get-Process extrac32 -ErrorAction SilentlyContinue -ErrorVariable err
+    if ($err -ne $null) {throw "Office Click-to-Run process didn't seem to run."}
+    Wait-Process -Id $process.Id
 
     $catalog = Get-Content -Path "$($catDir)releasehistory.xml" -Raw
 
