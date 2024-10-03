@@ -1,7 +1,7 @@
 function Get-LatestOfficeVersion {
 
     param([Parameter(Mandatory,ValueFromPipeline)][string]$channel)
-
+    Write-Output "Download Catalog..."
     $catalogUrl = "https://officecdn.microsoft.com/pr/wsus/releasehistory.cab"
     $catDir = $env:ProgramData +"\OTS\Catalogs\"
 
@@ -11,6 +11,8 @@ function Get-LatestOfficeVersion {
     }
 
     Invoke-WebRequest $catalogUrl -OutFile "$($catDir)releasehistory.cab"
+
+     Write-Output "Extract..."
 
     Start-Process -FilePath "cmd.exe" -ArgumentList "/c extrac32.exe /Y /E /L $($catDir) $($catDir)releasehistory.cab" | Out-Null
 
