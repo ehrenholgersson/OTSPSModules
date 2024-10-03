@@ -23,7 +23,7 @@ function Run-OfficeUpdateOrFix{
 	{
 		return
 	}
-
+    Write-Output "Action: $actionString"
     try {
         $c2rPath = "$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\officec2rclient.exe"
         $currentVersion = $null
@@ -40,6 +40,7 @@ function Run-OfficeUpdateOrFix{
             Write-Output "Starting Repair..."
             Start-Process -FilePath $c2rPath -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
         }
+        Write-Output "Action: $actionString"
         $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable err
         if ($err -ne $null) {throw "Office Click-to-Run process didn't seem to run."}
         Wait-Process -Id $process.Id
