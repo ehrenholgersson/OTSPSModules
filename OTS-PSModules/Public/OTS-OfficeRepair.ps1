@@ -1,6 +1,6 @@
 function OTS-OfficeRepair{
     $wshell = New-Object -ComObject Wscript.Shell
-    $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click OK. ",0,"Office Repair",0x1)
+    $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click GO. ",0,"Office Repair",0x1)
 	$actionString = @("repair","repaired")
 	if (!($response -eq 1))
 	{
