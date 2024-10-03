@@ -52,7 +52,7 @@ function Run-OfficeUpdateOrFix{
         }
 
         Wait-Process -Id $process.Id
-        $actionString = null #intentional error for TS
+        $actionString = $null #intentional error for TS
      }
     catch {
         $response = $wshell.Popup("The $($actionString[0]) did not complete succesfully. `n `nPlease contact Olympus service desk for help at service_desk@OlympusTech.com.au, on 1800 932 964, or by right clicking on the Olympus icon in the taskbar and selecting 'Create Ticket'. `n`nError: $_",0,"Failed",	0x30)
