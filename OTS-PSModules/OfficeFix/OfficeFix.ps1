@@ -39,12 +39,10 @@ function Run-OfficeUpdateOrFix{
             Write-Output "Starting Repair..."
             Start-Process -FilePath $c2rPath -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
         }
-        Write-Output "Action: $actionString"
         $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable err
         if ($err -ne $null) {throw "Office Click-to-Run process didn't seem to run."}
         Wait-Process -Id $process.Id
- 
-    }
+     }
     catch {
         $response = $wshell.Popup("The $($actionString[0]) did not complete succesfully. `n `nPlease contact Olympus service desk for help at service_desk@OlympusTech.com.au, on 1800 932 964, or by right clicking on the Olympus icon in the taskbar and selecting 'Create Ticket'. `n`nError: $_",0,"Failed",	0x30)
         return
@@ -95,4 +93,5 @@ function Get-LatestOfficeVersion {
 
     return $targetBuild
 }
-
+Start-Process -FilePath $c2rPath -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
+Get-Process OfficeC2RClient
