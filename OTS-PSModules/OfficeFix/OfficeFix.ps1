@@ -47,7 +47,7 @@ function Run-OfficeUpdateOrFix{
                 start-sleep -Seconds 0.2
                 $timer += 0.2
                 $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable err
-                if ($timer -gt 3) {throw "Office Click-to-Run process didn't seem to run. Or it closed so quickly that we missed it, which may not be an error"}
+                if ($timer -gt 3) {throw "Blah. Or it closed so quickly that we missed it, which may not be an error"}
             }
         }
 
