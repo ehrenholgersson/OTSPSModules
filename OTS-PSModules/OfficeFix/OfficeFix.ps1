@@ -23,11 +23,6 @@ function Run-OfficeUpdateOrFix{
 	{
 		return
 	}
-    Write-Output "THis Does nothing!!"
-    
-}
-
-function OLD{
     try {
         $c2rPath = "$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\officec2rclient.exe"
         $currentVersion = $null
@@ -56,6 +51,11 @@ function OLD{
     }
 
     $response = $wshell.Popup("Office has been $($actionString[1]).`n `nIf this does not resolve your issue then please contact Olympus service desk for help at service_desk@OlympusTech.com.au, on 1800 932 964, or by right clicking on the Olympus icon in the taskbar and selecting 'Create Ticket'.",0,"Complete",0x0)
+    
+}
+
+function OLD{
+    
 }
 
 function Get-LatestOfficeVersion {
