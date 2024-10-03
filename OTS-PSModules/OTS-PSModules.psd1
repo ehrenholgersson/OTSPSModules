@@ -6,7 +6,7 @@
     RootModule         = 'OTS-PSModules.psm1'
 
     # Version number of this module.
-    ModuleVersion      = '0.11'
+    ModuleVersion      = '0.12'
 
     # ID used to uniquely identify this module
     GUID               = 'f531c8ef-a6fd-4448-a1f8-45252cbb894c'
