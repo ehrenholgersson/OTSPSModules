@@ -18,7 +18,7 @@ function Remove-FromString{
 function Run-OfficeUpdateOrFix{
     $wshell = New-Object -ComObject Wscript.Shell
     $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click OK. ",0,"Office Repair",0x1)
-	
+	$actionString = @("repair","repaired")
 	if (!($response -eq 1))
 	{
 		return
@@ -30,7 +30,6 @@ function Run-OfficeUpdateOrFix{
         Get-CimInstance -ClassName Win32_Product | ? { !($_.Name -eq $null) -and $_.Name.Contains("Office")} | ForEach-Object -Process {$currentVersion = $_.Version}
 
         $targetBuild = Get-LatestOfficeVersion -channel "Current"
-        $actionString = @("repair","repaired")
 
         if ([long]($targetBuild | Remove-FromString -toRemove '.') -gt [long]($currentVersion | Remove-FromString -toRemove '.')){
             $actionString = @("update","updated")
