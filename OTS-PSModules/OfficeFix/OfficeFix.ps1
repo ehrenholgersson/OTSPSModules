@@ -23,7 +23,11 @@ function Run-OfficeUpdateOrFix{
 	{
 		return
 	}
-    Write-Output "Action: $actionString"
+    Write-Output "THis Does nothing!!"
+    
+}
+
+function OLD{
     try {
         $c2rPath = "$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\officec2rclient.exe"
         $currentVersion = $null
