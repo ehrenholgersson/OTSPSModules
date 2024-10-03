@@ -1,21 +1,4 @@
-
-function Remove-FromString{
-
-    param (
-        [Parameter(Mandatory,ValueFromPipeline)][string]$stringIn,
-        $toRemove
-    )
-
-    [string]$result = ""
-
-    for ($i=0;$i -lt $stringIn.Length;$i++) {
-        if ($stringIn[$i] -ne $toRemove){
-            $result += $stringIn[$i]
-        }
-    }
-    return $result
-}
-function Run-OfficeUpdateOrFix{
+function OTS-OfficeRepair{
     $wshell = New-Object -ComObject Wscript.Shell
     $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click OK. ",0,"Office Repair",0x1)
 	$actionString = @("repair","repaired")
@@ -62,42 +45,3 @@ function Run-OfficeUpdateOrFix{
     $response = $wshell.Popup("Office has been $($actionString[1]).`n `nIf this does not resolve your issue then please contact Olympus service desk for help at service_desk@OlympusTech.com.au, on 1800 932 964, or by right clicking on the Olympus icon in the taskbar and selecting 'Create Ticket'.",0,"Complete",0x0)
     
 }
-
-function Get-LatestOfficeVersion {
-
-    param([Parameter(Mandatory,ValueFromPipeline)][string]$channel)
-
-    $catalogUrl = "https://officecdn.microsoft.com/pr/wsus/releasehistory.cab"
-    $catDir = $env:ProgramData +"\OTS\Catalogs\"
-
-    If(!(test-path -PathType container $catDir))
-    {
-        New-Item -ItemType Directory -Path $catDir
-    }
-
-    Invoke-WebRequest $catalogUrl -OutFile "$($catDir)releasehistory.cab"
-
-    Start-Process -FilePath "cmd.exe" -ArgumentList "/c extrac32.exe /Y /E /L $($catDir) $($catDir)releasehistory.cab" | Out-Null
-
-    $process = Get-Process extrac32 -ErrorAction SilentlyContinue -ErrorVariable err
-    if ($err -ne $null) {throw "Office Click-to-Run process didn't seem to run."}
-    Wait-Process -Id $process.Id
-
-    $catalog = Get-Content -Path "$($catDir)releasehistory.xml" -Raw
-
-    $targetChannel = (Select-Xml -Content $catalog -XPath "//UpdateChannel" | ? {$_.Node.Name -eq $channel} )
-    if ($targetChannel.Length -lt 1)
-    {
-        throw "Failed to find specified release channel details"
-    }
-
-    $targetBuild = ($targetChannel |foreach {$_.Node.Update} | ? {$_.Latest -eq "True"}).LegacyVersion
-
-    if ($targetBuild.Length -lt 1)
-    {
-        throw "Failed to locate a valid build number"
-    }
-
-    return $targetBuild
-}
-
