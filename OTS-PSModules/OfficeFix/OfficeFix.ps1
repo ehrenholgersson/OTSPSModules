@@ -93,5 +93,4 @@ function Get-LatestOfficeVersion {
 
     return $targetBuild
 }
-Start-Process -FilePath $c2rPath -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
-Get-Process OfficeC2RClient
+
