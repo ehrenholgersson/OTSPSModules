@@ -24,7 +24,9 @@
     Description        = 'Various PS Functions created for management and troubleshooting'
 
     # Functions to export from this module
-    FunctionsToExport  = @('OTS-OfficeRepair'
+    FunctionsToExport  = @(
+        'OTS-OfficeRepair',
+        'Get-LatestOfficeVersion'
     )
 
     # Aliases to export from this module
