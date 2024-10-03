@@ -52,10 +52,6 @@ function Run-OfficeUpdateOrFix{
     
 }
 
-function OLD{
-    
-}
-
 function Get-LatestOfficeVersion {
 
     param([Parameter(Mandatory,ValueFromPipeline)][string]$channel)
