@@ -1,7 +1,7 @@
 function OTS-OfficeRepair{
     $wshell = New-Object -ComObject Wscript.Shell
-    $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click GO. ",0,"Office Repair",0x1)
-	$actionString = @("repair","repaired")
+    $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click the button. ",0,"Office Repair",0x1)
+	$actionString = @("Nonthing","Ignored") # Shouldn't see this
 	if (!($response -eq 1))
 	{
 		return
@@ -22,15 +22,16 @@ function OTS-OfficeRepair{
             Write-Output "Starting Repair..."
             Start-Process -FilePath $c2rPath -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
         }
-        $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable err
-        if ($err -ne $null) {
+        $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable ev
+        if ($ev -ne $null) {
             [double]$timer = 0
             while ($err -ne $null){
-                $err = $null
+                Write-Output "Wait..."
+                $ev = $null
                 start-sleep -Seconds 0.2
                 $timer += 0.2
-                $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable err
-                if ($timer -gt 3) {throw "Office Click-to-Run process didn't run. Or it closed so quickly that we missed it, which may not be an error"}
+                $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable ev
+                if ($timer -gt 3) {throw "We missed Click-to-Run Repair, did it run?"}
             }
         }
 
