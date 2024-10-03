@@ -47,11 +47,12 @@ function Run-OfficeUpdateOrFix{
                 start-sleep -Seconds 0.2
                 $timer += 0.2
                 $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable err
-                if ($timer -gt 3) {throw "Office Click-to-Run process didn't seem to run. Or it closed so quickly that we missed it, which may not be an error"}
+                if ($timer -gt 3) {throw "Office Click-to-Run process didn't run. Or it closed so quickly that we missed it, which may not be an error"}
             }
         }
 
         Wait-Process -Id $process.Id
+        $actionString = null #intentional error for TS
      }
     catch {
         $response = $wshell.Popup("The $($actionString[0]) did not complete succesfully. `n `nPlease contact Olympus service desk for help at service_desk@OlympusTech.com.au, on 1800 932 964, or by right clicking on the Olympus icon in the taskbar and selecting 'Create Ticket'. `n`nError: $_",0,"Failed",	0x30)
