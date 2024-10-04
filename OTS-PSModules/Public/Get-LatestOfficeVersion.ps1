@@ -16,7 +16,9 @@ function Get-LatestOfficeVersion {
 
     Start-Process -FilePath "cmd.exe" -ArgumentList "/c extrac32.exe /Y /E /L $($catDir) $($catDir)\releasehistory.cab" | Out-Null
     Start-Sleep -Seconds 0.5 #give time to extract
-    if (!(!(test-path "$catDir\releasehistory.xml")))
+    if (!(test-path "$catDir\releasehistory.xml")) {
+        throw "Failed to extract version information"
+    }
 
     # $process = Get-Process extrac32 -ErrorAction SilentlyContinue -ErrorVariable err
     # # if ($err -ne $null) {
