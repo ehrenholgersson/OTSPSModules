@@ -8,7 +8,7 @@ function OTS-OfficeRepair{
 	}
     try {
         Write-Output "Get current Office version..."
-        $c2rPath = "$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\officec2rclient.exe"
+        $c2rPath = "$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\OfficeClickToRun.exe"
         $currentVersion = $null
         Get-CimInstance -ClassName Win32_Product | ? { !($_.Name -eq $null) -and $_.Name.Contains("Office")} | ForEach-Object -Process {$currentVersion = $_.Version}
         
@@ -31,7 +31,7 @@ function OTS-OfficeRepair{
             Write-Output "Starting Repair..."
             Start-Process -FilePath $c2rPath -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
         }
-        $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable ev
+        $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
         if ($ev -ne $null) {
             [double]$timer = 0
             while ($err -ne $null){
@@ -39,7 +39,7 @@ function OTS-OfficeRepair{
                 $ev = $null
                 start-sleep -Seconds 0.2
                 $timer += 0.2
-                $process = Get-Process OfficeC2RClient -ErrorAction SilentlyContinue -ErrorVariable ev
+                $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
                 if ($timer -gt 3) {throw "We missed Click-to-Run Repair, did it run?"}
             }
         }
