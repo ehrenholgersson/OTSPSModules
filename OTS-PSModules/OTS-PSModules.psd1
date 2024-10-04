@@ -25,8 +25,7 @@
 
     # Functions to export from this module
     FunctionsToExport  = @(
-        'OTS-OfficeRepair',
-        'Get-LatestOfficeVersion'
+        'OTS-OfficeRepair'
     )
 
     # Aliases to export from this module
