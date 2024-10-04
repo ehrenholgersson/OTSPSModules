@@ -34,7 +34,7 @@ function Get-LatestOfficeVersion {
     # # }
     # # slee -Id $process.Id
 
-    $catalog = Get-Content -Path "$($catDir)releasehistory.xml" -Raw
+    $catalog = Get-Content -Path "$($catDir)\releasehistory.xml" -Raw
 
     $targetChannel = (Select-Xml -Content $catalog -XPath "//UpdateChannel" | ? {$_.Node.Name -eq $channel} )
     if ($targetChannel.Length -lt 1)
