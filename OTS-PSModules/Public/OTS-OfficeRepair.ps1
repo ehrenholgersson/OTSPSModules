@@ -34,7 +34,7 @@ function OTS-OfficeRepair{
         else {
             $actionString = @("repair","repaired")
             Write-Output "Starting Repair..."
-            Admin-Check $c2rPath, 'scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True'
+            Admin-Check -Process $c2rPath -ArgList 'scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True'
         }
         if ($process -ne $null){
             Wait-Process -Id $process.Id
