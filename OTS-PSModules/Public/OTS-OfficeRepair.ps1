@@ -29,7 +29,8 @@ function OTS-OfficeRepair{
         else {
             $actionString = @("repair","repaired")
             Write-Output "Starting Repair..."
-            Start-Process -FilePath $c2rPath -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
+            $Credential = New-Object System.Management.Automation.PSCredential "$((Get-ComputerInfo).CsDNSHostName)\Maintenence" Get-SecCredentials "$env:ProgramData\OTS\data\1.dat"
+            Start-Process -FilePath $c2rPath -Credential $Credential -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
         }
         $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
         if ($ev -ne $null) {
