@@ -4,6 +4,9 @@ function Admin-Check{
         [string]$ArgList,
         [int]$Count
     )
+    if ($Count -gt 3){
+        throw "Seem to be stuck in a loop...."
+    }
     try {
         $isAdmin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
             # $wshell = New-Object -ComObject Wscript.Shell

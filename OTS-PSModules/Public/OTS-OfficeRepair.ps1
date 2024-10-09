@@ -36,12 +36,12 @@ function OTS-OfficeRepair{
             Write-Output "Starting Repair..."
             Admin-Check -Process $c2rPath -ArgList 'scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True'
         }
-        if ($process -ne $null){
-            Wait-Process -Id $process.Id
-        }
-        else {
-            throw "We missed Click-to-Run Repair, did it run?"
-        }
+        # if ($process -ne $null){
+        #     Wait-Process -Id $process.Id
+        # }
+        # else {
+        #     throw "We missed Click-to-Run Repair, did it run?"
+        # }
 
         #old wait process code
         # $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
