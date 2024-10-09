@@ -1,4 +1,7 @@
 function OTS-OfficeRepair{
+
+    Admin-Check OTS-OfficeRepair # if we are not admin then rerun with correct credentials
+
     $wshell = New-Object -ComObject Wscript.Shell
     $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click OK. ",0,"Office Repair",0x1)
 	$actionString = @("<Should not see this>","<Should not see this>")
@@ -29,8 +32,7 @@ function OTS-OfficeRepair{
         else {
             $actionString = @("repair","repaired")
             Write-Output "Starting Repair..."
-            $Credential = New-Object System.Management.Automation.PSCredential "$((Get-ComputerInfo).CsDNSHostName)\Maintenence", (Get-SecCredentials "$env:ProgramData\OTS\data\1.dat")
-            Start-Process -FilePath $c2rPath -Credential $Credential -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
+            Start-Process -FilePath $c2rPath -Verb RunAs -ArgumentList "scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True"
         }
         $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
         if ($ev -ne $null) {
