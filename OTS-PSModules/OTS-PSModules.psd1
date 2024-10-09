@@ -6,7 +6,7 @@
     RootModule         = 'OTS-PSModules.psm1'
 
     # Version number of this module.
-    ModuleVersion      = '0.2'
+    ModuleVersion      = '0.21'
 
     # ID used to uniquely identify this module
     GUID               = 'f531c8ef-a6fd-4448-a1f8-45252cbb894c'
@@ -39,7 +39,9 @@
         '.\OTS-PSModules.psm1',
         '.\OTS-PSModules\Public\OTS-OfficeRepair.ps1',
         '.\OTS-PSModules\Private\Get-LatestOfficeVersion.ps1',
-        '.\OTS-PSModules\Private\Remove-FromString.ps1'
+        '.\OTS-PSModules\Private\Remove-FromString.ps1',
+        '.\OTS-PSModules\Private\Get-SecCredentials.ps1',
+        '.\OTS-PSModules\Private\New-MaintenenceAcct.ps1'        
     )
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess
