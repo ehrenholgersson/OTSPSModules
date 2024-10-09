@@ -9,8 +9,8 @@ function OTS-OfficeRepair{
     if (!$isAdmin){
         $Credential = New-Object System.Management.Automation.PSCredential "$((Get-ComputerInfo).CsDNSHostName)\Maintenence", (Get-SecCredentials "$env:ProgramData\OTS\data\1.dat")
         $soon = Get-Date -UnixTimeSeconds (([DateTimeOffset](Get-Date)).ToUnixTimeSeconds() + 5)
-        New-ScheduledTaskAction -Execute "powershell.exe OTS-OfficeRepair"
-        New-ScheduledTaskTrigger -Once -At $soon
+        $Sta =  New-ScheduledTaskAction -Execute "powershell.exe OTS-OfficeRepair"
+        $Stt = New-ScheduledTaskTrigger -Once -At $soon
         Register-ScheduledTask OTS_Repair -Action $Sta -Trigger $Stt -User $Credential.UserName -Password $Credential.Password
         Write-Output "Relaunce as admin...."
         Start-Sleep -Seconds 5
