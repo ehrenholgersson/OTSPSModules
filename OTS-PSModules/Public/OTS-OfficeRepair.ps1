@@ -63,12 +63,12 @@ function OTS-OfficeRepair{
         #         if ($timer -gt 3) {throw "We missed Click-to-Run Repair, did it run?"}
         #     }
         # }
-        # do{ # process can restart so when it terminates we give it a sec to make sure ist really finished
-        #     $ev = $null
-        #     Wait-Process -Id $process.Id
-        #     start-sleep -Seconds 1
-        #     $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
-        # } while ($ev = $null)
+         do{ # process can restart so when it terminates we give it a sec to make sure ist really finished
+             $ev = $null
+             Wait-Process -Id $process.Id
+             start-sleep -Seconds 1
+             $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
+        } while ($ev = $null)
 
      }
     catch {
