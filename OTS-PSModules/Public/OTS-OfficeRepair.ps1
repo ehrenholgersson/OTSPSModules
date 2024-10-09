@@ -11,6 +11,9 @@ function OTS-OfficeRepair{
         $soon = Get-Date -Second (((Get-Date).Second + 5)%60)
         $Sta =  New-ScheduledTaskAction -Execute "powershell -command &{OTS-OfficeRepair}"
         $Stt = New-ScheduledTaskTrigger -Once -At $soon
+        if ((Get-ScheduledTask OTS_Repair -ErrorAction SilentlyContinue) -ne $null){
+            Unregister-ScheduledTask OTS_Repair
+        }
         Register-ScheduledTask OTS_Repair -Action $Sta -Trigger $Stt # User $Credential.UserName -Password (ConvertFrom-SecureString $Credential.Password)
         Write-Output "Relaunch as admin...."
         Start-Sleep -Seconds 5
