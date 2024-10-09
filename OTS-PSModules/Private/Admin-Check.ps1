@@ -9,7 +9,7 @@ function Admin-Check{
         if (!($isAdmin)){
             $Credential = New-Object System.Management.Automation.PSCredential "$((Get-ComputerInfo).CsDNSHostName)\Maintenence", (Get-SecCredentials "$env:ProgramData\OTS\data\1.dat")
             # if (!($Credential.UserName.Contains("Maintenence"))){
-                Start-Process "Powershell" -Credential $Credential -ArgumentList -Wait "Start-Process $process -Verb RunAs -Wait -ArgumentList $ArgList"
+                Start-Process "Powershell" -Credential $Credential -Wait -ArgumentList "Start-Process $process -Verb RunAs -Wait -ArgumentList $ArgList"
             # }
             # return $null # shouldn't be here
         }
