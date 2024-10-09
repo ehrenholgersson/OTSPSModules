@@ -29,12 +29,12 @@ function OTS-OfficeRepair{
         if ([long]($targetBuild | Remove-FromString -toRemove '.') -gt [long]($currentVersion | Remove-FromString -toRemove '.')){
             $actionString = @("update","updated")
             Write-Output "Starting Update to $targetBuild..."
-            $process = Start-Process -FilePath $c2rPath -ArgumentList "/update user updatetoversion=$($targetBuild)" -PassThru
+            Start-Process -FilePath $c2rPath -Wait -ArgumentList "/update user updatetoversion=$($targetBuild)" -PassThru
         }
         else {
             $actionString = @("repair","repaired")
             Write-Output "Starting Repair..."
-            $process = (Admin-Check "Start-Process -FilePath $c2rPath -Verb RunAs -ArgumentList 'scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True'")
+            Admin-Check $c2rPath, 'scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True'
         }
         if ($process -ne $null){
             Wait-Process -Id $process.Id
