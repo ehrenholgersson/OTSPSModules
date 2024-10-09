@@ -1,6 +1,6 @@
 function Admin-Check{
     param(
-        [srting]$ToRun
+        [string]$ToRun
     )
 
     $isAdmin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
