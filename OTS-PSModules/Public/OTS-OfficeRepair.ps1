@@ -1,6 +1,8 @@
 function OTS-OfficeRepair{
 
-    Admin-Check OTS-OfficeRepair # if we are not admin then rerun with correct credentials
+    if (!(Admin-Check OTS-OfficeRepair)) {
+        return
+    } # if we are not admin then rerun with correct credentials
 
     $wshell = New-Object -ComObject Wscript.Shell
     $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click OK. ",0,"Office Repair",0x1)
