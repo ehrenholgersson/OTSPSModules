@@ -38,6 +38,7 @@
         '.\OTS-PSModules.psd1',
         '.\OTS-PSModules.psm1',
         '.\OTS-PSModules\Public\OTS-OfficeRepair.ps1',
+        '.\OTS-PSModules\Public\OTS-OfficeRepair.ps1',
         '.\OTS-PSModules\Private\Get-LatestOfficeVersion.ps1',
         '.\OTS-PSModules\Private\Remove-FromString.ps1',
         '.\OTS-PSModules\Private\Get-SecCredentials.ps1',

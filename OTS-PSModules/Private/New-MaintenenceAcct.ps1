@@ -1,5 +1,6 @@
 
 function New-MaintenenceAcct{
+    
     $Password = Get-SecCredentials "$env:ProgramData\OTS\data\1.dat"
     if ($Password -eq $null)
     {
