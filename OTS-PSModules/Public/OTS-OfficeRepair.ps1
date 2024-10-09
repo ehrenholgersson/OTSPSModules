@@ -1,9 +1,5 @@
 function OTS-OfficeRepair{
 
-    # if (!(Admin-Check OTS-OfficeRepair)) {
-    #     return
-    # } # if we are not admin then rerun with correct credentials
-
     $isAdmin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
     if (!$isAdmin){
@@ -51,18 +47,6 @@ function OTS-OfficeRepair{
             throw "We missed Click-to-Run Repair, did it run?"
         }
 
-        #old wait process code
-        # $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
-        # if ($ev -ne $null) {
-        #     [double]$timer = 0
-        #     while ($err -ne $null){
-        #         $ev = $null
-        #         start-sleep -Seconds 0.2
-        #         $timer += 0.2
-        #         $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
-        #         if ($timer -gt 3) {throw "We missed Click-to-Run Repair, did it run?"}
-        #     }
-        # }
          do{ # process can restart so when it terminates we give it a sec to make sure ist really finished
              $ev = $null
              Wait-Process -Id $process.Id

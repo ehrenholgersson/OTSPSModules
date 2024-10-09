@@ -1,4 +1,3 @@
-
 function Remove-FromString{
 
     param (
