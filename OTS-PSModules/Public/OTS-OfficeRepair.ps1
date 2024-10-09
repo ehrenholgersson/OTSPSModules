@@ -4,6 +4,18 @@ function OTS-OfficeRepair{
     #     return
     # } # if we are not admin then rerun with correct credentials
 
+    $isAdmin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    if (!$isAdmin){
+        $Credential = New-Object System.Management.Automation.PSCredential "$((Get-ComputerInfo).CsDNSHostName)\Maintenence", (Get-SecCredentials "$env:ProgramData\OTS\data\1.dat")
+        $soon = Get-Date -UnixTimeSeconds (([DateTimeOffset](Get-Date)).ToUnixTimeSeconds() + 5)
+        New-ScheduledTaskAction -Execute "powershell.exe OTS-OfficeRepair"
+        New-ScheduledTaskTrigger -Once -At $soon
+        Register-ScheduledTask OTS_Repair -Action $Sta -Trigger $Stt -User $Credential.UserName -Password $Credential.Password
+        Write-Output "Relaunce as admin...."
+        Start-Sleep -Seconds 5
+    }
+
     $wshell = New-Object -ComObject Wscript.Shell
     $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n Please save any open work and click OK. ",0,"Office Repair",0x1)
 	$actionString = @("<Should not see this>","<Should not see this>")
@@ -29,19 +41,19 @@ function OTS-OfficeRepair{
         if ([long]($targetBuild | Remove-FromString -toRemove '.') -gt [long]($currentVersion | Remove-FromString -toRemove '.')){
             $actionString = @("update","updated")
             Write-Output "Starting Update to $targetBuild..."
-            Start-Process -FilePath $c2rPath -Wait -ArgumentList "/update user updatetoversion=$($targetBuild)" -PassThru
+            $process = Start-Process -FilePath $c2rPath -PassThru -ArgumentList "/update user updatetoversion=$($targetBuild)" -PassThru
         }
         else {
             $actionString = @("repair","repaired")
             Write-Output "Starting Repair..."
-            Admin-Check -Process $c2rPath -ArgList 'scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True'
+            $process = Start-Process -FilePath $c2rPath -PassThru -ArgumentList 'scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True'
         }
-        # if ($process -ne $null){
-        #     Wait-Process -Id $process.Id
-        # }
-        # else {
-        #     throw "We missed Click-to-Run Repair, did it run?"
-        # }
+         if ($process -ne $null){
+             Wait-Process -Id $process.Id
+        }
+        else {
+            throw "We missed Click-to-Run Repair, did it run?"
+        }
 
         #old wait process code
         # $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
