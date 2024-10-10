@@ -20,10 +20,12 @@ function OTS-OfficeRepair{
         $c2rPath = "$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\OfficeClickToRun.exe"
         $currentVersion = $null
         Get-CimInstance -ClassName Win32_Product | ? { !($_.Name -eq $null) -and $_.Name.Contains("Office")} | ForEach-Object -Process {$currentVersion = $_.Version}
+        Write-Output $currentVersion
         
         Write-Output "Get latest version..."
         try{
             $targetBuild = Get-LatestOfficeVersion -channel "Current"
+            Write-Output $targetBuild
         }
         catch {
             throw "Error getting latest version: $_"
@@ -32,27 +34,32 @@ function OTS-OfficeRepair{
         Write-Output "Compare Versions..."
         if ([long]($targetBuild | Remove-FromString -toRemove '.') -gt [long]($currentVersion | Remove-FromString -toRemove '.')){
             $actionString = @("update","updated")
+            Write-Output "Update is available."
             Write-Output "Starting Update to $targetBuild..."
             $process = Start-Process -FilePath $c2rPath -PassThru -ArgumentList "/update user updatetoversion=$($targetBuild)" -PassThru
         }
         else {
             $actionString = @("repair","repaired")
+            Write-Output "Up to date."
             Write-Output "Starting Repair..."
             $process = Start-Process -FilePath $c2rPath -PassThru -ArgumentList 'scenario=Repair platform=x64 culture=en-us forceappshutdown=True RepairType=FullRepair DisplayLevel=True'
         }
          if ($process -ne $null){
              Wait-Process -Id $process.Id
+             start-sleep -Seconds 1
         }
         else {
             throw "We missed Click-to-Run Repair, did it run?"
         }
-
-         do{ # process can restart so when it terminates we give it a sec to make sure ist really finished
+        $ev = $null
+        $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
+        while ($ev = $null) { # process can restart so when it terminates we give it a sec to make sure ist really finished
+            $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
              $ev = $null
              Wait-Process -Id $process.Id
              start-sleep -Seconds 1
              $process = Get-Process OfficeClickToRun -ErrorAction SilentlyContinue -ErrorVariable ev
-        } while ($ev = $null)
+        } 
 
      }
     catch {

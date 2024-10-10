@@ -1,4 +1,3 @@
-
 function Get-SecCredentials{
     param(
         [Parameter(Mandatory)][string]$Path
