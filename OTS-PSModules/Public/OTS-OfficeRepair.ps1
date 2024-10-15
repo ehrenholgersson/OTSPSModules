@@ -1,4 +1,12 @@
 function OTS-OfficeRepair{
+    
+    $wshell = New-Object -ComObject Wscript.Shell
+    $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n This may take some time and any office applications will be unavailable until complete (Including Teams). Please save any open work and click OK. ",0,"Office Repair",0x1)
+	$actionString = @("<Should not see this>","<Should not see this>")
+	if (!($response -eq 1))
+	{
+	    return
+	}
 
     $isAdmin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
@@ -8,13 +16,7 @@ function OTS-OfficeRepair{
         return
     }
 
-    $wshell = New-Object -ComObject Wscript.Shell
-    $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n This may take some time and any office applications will be unavailable until complete (Including Teams). Please save any open work and click OK. ",0,"Office Repair",0x1)
-	$actionString = @("<Should not see this>","<Should not see this>")
-	if (!($response -eq 1))
-	{
-	    return
-	}
+
     try {
         Write-Output "Get current Office version..."
         $c2rPath = "$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\OfficeClickToRun.exe"
