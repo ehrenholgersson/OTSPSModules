@@ -1,20 +1,20 @@
 function OTS-OfficeRepair{
 
-    # $isAdmin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    $isAdmin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
-    # if (!$isAdmin){
-    #     $Credential = New-Object System.Management.Automation.PSCredential "$((Get-ComputerInfo).CsDNSHostName)\Maintenence", (Get-SecCredentials "$env:ProgramData\OTS\data\1.dat")
-    #     Start-Process Powershell -Credential $Credential -ArgumentList 'Start-Process Powershell -Verb RunAs -ArgumentList "OTS-OfficeRepair"'
-    #     return
-    # }
+    if (!$isAdmin){
+        $Credential = New-Object System.Management.Automation.PSCredential "$((Get-ComputerInfo).CsDNSHostName)\Maintenence", (Get-SecCredentials "$env:ProgramData\OTS\data\1.dat")
+        Start-Process Powershell -Credential $Credential -ArgumentList 'Start-Process Powershell -Verb RunAs -ArgumentList "OTS-OfficeRepair"'
+        return
+    }
 
     $wshell = New-Object -ComObject Wscript.Shell
-    # $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n This may take some time and any office applications will be unavailable until complete (Including Teams). Please save any open work and click OK. ",0,"Office Repair",0x1)
+    $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `n This may take some time and any office applications will be unavailable until complete (Including Teams). Please save any open work and click OK. ",0,"Office Repair",0x1)
 	$actionString = @("<Should not see this>","<Should not see this>")
-	# if (!($response -eq 1))
-	# {
-	# 	return
-	# }
+	if (!($response -eq 1))
+	{
+	    return
+	}
     try {
         Write-Output "Get current Office version..."
         $c2rPath = "$($env:CommonProgramW6432)\Microsoft Shared\ClickToRun\OfficeClickToRun.exe"
@@ -67,6 +67,6 @@ function OTS-OfficeRepair{
         return
     }
 
-    # $response = $wshell.Popup("Office has been $($actionString[1]).`n `nIf this does not resolve your issue then please contact Olympus service desk for help at service_desk@OlympusTech.com.au, on 1800 932 964, or by right clicking on the Olympus icon in the taskbar and selecting 'Create Ticket'.",0,"Complete",0x0)
+    $response = $wshell.Popup("Office has been $($actionString[1]).`n `nIf this does not resolve your issue then please contact Olympus service desk for help at service_desk@OlympusTech.com.au, on 1800 932 964, or by right clicking on the Olympus icon in the taskbar and selecting 'Create Ticket'.",0,"Complete",0x0)
     
 }
