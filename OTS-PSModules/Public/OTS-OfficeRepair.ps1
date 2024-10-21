@@ -1,5 +1,4 @@
 function OTS-OfficeRepair{
-    Import-Module "$env:ProgramData\OTS\Modules\OTS-PSModules\Private\GetKey.dll"
 
     $wshell = New-Object -ComObject Wscript.Shell
     $response = $wshell.Popup("This Script will update/repair your Office instalation. It is intended to be run in the case Office applications will not start.`n `nThis may take some time and any office applications will be unavailable until complete (Including Teams). Please save any open work and click OK. ",0,"Office Repair",0x1)
@@ -39,7 +38,7 @@ function OTS-OfficeRepair{
             $actionString = @("update","updated")
             Write-Output "Update is available."
             Write-Output "Starting Update to $targetBuild..."
-            $process = Start-Process -FilePath $c2rPath -PassThru -ArgumentList "/update user updatetoversion=$($targetBuild)" -PassThru
+            $process = Start-Process -FilePath $c2rPath -PassThru -ArgumentList "/update user updatetoversion=$($targetBuild)"
         }
         else {
             $actionString = @("repair","repaired")
